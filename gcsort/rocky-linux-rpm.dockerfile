@@ -19,8 +19,8 @@ WORKDIR /gnucobol
 #  ===================================
 RUN dnf -y install dos2unix gnucobol make subversion 
 RUN cd /gnucobol && \
-    svn checkout --config-option config:miscellany:use-commit-times=yes https://svn.code.sf.net/p/gnucobol/contrib/trunk/tools/GCSORT 
-    # cd /gnucobol/GCSORT && svn up -r1023
+    svn checkout --config-option config:miscellany:use-commit-times=yes https://svn.code.sf.net/p/gnucobol/contrib/trunk/tools/GCSORT && \
+    cd /gnucobol/GCSORT && svn up -r1069
 RUN cd /gnucobol/GCSORT && \
     make && \
     cd /gnucobol/GCSORT/tests/script && \
