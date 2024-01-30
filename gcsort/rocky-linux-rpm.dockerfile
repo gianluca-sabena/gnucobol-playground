@@ -7,20 +7,24 @@ WORKDIR /gnucobol
 #  ===================================
 #  Build gnu cobol from svn
 #  ===================================
-# RUN dnf install -y rpmdevtools rpmlint make git  tar subversion  autoconf automake libtool m4 gmp-devel libdb-devel help2man flex bison byacc gettext texinfo 
+RUN dnf install -y dos2unix make git  tar xz subversion  autoconf automake libtool m4 gmp-devel libdb-devel help2man flex bison byacc gettext texinfo libxml2-devel cjson-devel
 # RUN svn checkout https://svn.code.sf.net/p/gnucobol/code/trunk gnucobol-code
-# RUN  ls -la && cd gnucobol-code && \
-#     ./autogen.sh && \
-#     ./configure && \
-#     make && \
-#     make install
+RUN curl -L https://ftpmirror.gnu.org/gnucobol/gnucobol-3.2.tar.xz --output gnucobol-3.2.tar.xz && \
+tar -xvf gnucobol-3.2.tar.xz 
+WORKDIR /gnucobol/gnucobol-3.2
+RUN ./autogen.sh && \
+    ./configure && \
+    make && \
+    make install
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 #  ===================================
 #  Build GCSORT from svn
 #  ===================================
-RUN dnf -y install dos2unix gnucobol make subversion 
+# RUN dnf -y install  gnucobol make subversion 
 RUN cd /gnucobol && \
-    svn checkout --config-option config:miscellany:use-commit-times=yes https://svn.code.sf.net/p/gnucobol/contrib/trunk/tools/GCSORT 
-    # cd /gnucobol/GCSORT && svn up -r1023
+    svn checkout --config-option config:miscellany:use-commit-times=yes https://svn.code.sf.net/p/gnucobol/contrib/trunk/tools/GCSORT && \
+    cd /gnucobol/GCSORT && \
+    svn up -r1066
 RUN cd /gnucobol/GCSORT && \
     make && \
     cd /gnucobol/GCSORT/tests/script && \
