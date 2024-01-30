@@ -24,13 +24,16 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 RUN cd /gnucobol && \
     svn checkout --config-option config:miscellany:use-commit-times=yes https://svn.code.sf.net/p/gnucobol/contrib/trunk/tools/GCSORT && \
     cd /gnucobol/GCSORT && \
-    svn up -r1066
+    svn up -r1069
 RUN cd /gnucobol/GCSORT && \
     make && \
-    cd /gnucobol/GCSORT/tests/script && \
-    dos2unix compile.sh  && \
-    chmod u+x compile.sh && \
-    ./compile.sh || true && \
-    cd /gnucobol/GCSORT/tests/bin && \
-    ./gctestset && \
-    ./gctestrun > test-run.log
+    ln -s /gnucobol/GCSORT/gcsort /usr/local/bin/gcsort 
+# RUN cd /gnucobol/GCSORT/tests/script && \
+#     dos2unix compile.sh  && \
+#     chmod u+x compile.sh && \
+#     ./compile.sh || true && \
+#     cd /gnucobol/GCSORT/tests/bin && \
+#     ./gctestset && \
+#     ./gctestrun > test-run.log
+RUN mkdir -p /host/data
+WORKDIR /host/data

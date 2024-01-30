@@ -6,7 +6,7 @@ A docker image to build
 # Release
  - Checkout code with svn `svn checkout --config-option config:miscellany:use-commit-times=yes https://svn.code.sf.net/p/gnucobol/contrib/trunk/tools/GCSORT`
  - Use  svn log and search for tags with a new version in comment, I guess this means the commit create a new version for GCSORT
- - GCSORT Revision SVN r1066 compiled with GNUCOBOL 3.2 downloaded from <https://ftpmirror.gnu.org/gnucobol/gnucobol-3.2.tar.xz> and compiled in container
+ - GCSORT Revision SVN r1069 compiled with GNUCOBOL 3.2 downloaded from <https://ftpmirror.gnu.org/gnucobol/gnucobol-3.2.tar.xz> and compiled in container
 
 # Build
 - Open linux terminal (On Windows you may use wsl2 `wsl --install Ubuntu` and `wsl -d Ubuntu`)
@@ -14,6 +14,7 @@ A docker image to build
 - `cd gcsort`
 - use `./devel.sh cb` -> checkout GNUCOBOL and GCSORT, build and run tests
 - use `./devel.sh cs` -> open a terminal to a container built before, `cd /gnucobol/GCSORT` and run `./gcsort`
+
 
 # Links
 - GNU COBOL - Requirements <https://sourceforge.net/p/gnucobol/code/HEAD/tree/tags/gnucobol-3.2/HACKING>
