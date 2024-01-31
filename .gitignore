@@ -1,3 +1,5 @@
 build/
 .vscode
 gcsort/data
+*.tmp
+gcsort/test/tmp/

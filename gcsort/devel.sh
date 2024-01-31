@@ -32,9 +32,10 @@ Help() {
     echo
     echo "Syntax: devel.sh command"
     echo "command:"
-    echo " help                          Print this help"
-    echo " cb | container-build               Docker buid"
-    echo " cs | container-shell              Attach a shell to docker container"
+    echo " help                       Print this help"
+    echo " cb | container-build       Docker buid"
+    echo " cs | container-shell       Attach a shell to docker container"
+    echo " tj | test-join             Test join"
 }
 
 ################################################################################
@@ -42,22 +43,22 @@ Help() {
 # Main program                                                                 #
 ################################################################################
 ################################################################################
-
+CONTAINER_VOL=(-v "${SCRIPT_DIR}/data:/host/data" -v "${SCRIPT_DIR}/test:/host/test")
 ################################################################################
 # Process the input options. Add options as needed.                            #
 ################################################################################
 
-if ! command -v docker &>/dev/null; then
-    if ! command -v podman &>/dev/null; then
+if ! command -v podman &>/dev/null; then
+    if ! command -v docker &>/dev/null; then
         echo "Container: docker or podman command are required, but could not be found... Install one of them and retry!"
         exit 1
     else
-        echo "Container: Podman command found..."
-        CONTAINER_BIN="podman"
+        echo "Container: Docker command found..."
+        CONTAINER_BIN="docker"
     fi
 else 
-    echo "Container: Docker command found..."
-    CONTAINER_BIN="docker"
+    echo "Container: Podman command found..."
+    CONTAINER_BIN="podman"
 fi
 # Get the options
 # Get the options
@@ -79,7 +80,16 @@ while [[ "$#" -gt 0 ]]; do
        echo " Share data from host to container: "
        echo "  - Local data folder: ${SCRIPT_DIR}/data"
        echo "  - Container data: /host/data"
-       "${CONTAINER_BIN}" run -t -i -v "${SCRIPT_DIR}/data:/host/data" --rm --name  "${CONTAINER_NAME}" "${CONTAINER_NAME}:${CONTAINER_TAG}"
+       "${CONTAINER_BIN}" run -t -i "${CONTAINER_VOL[@]}" --rm --name  "${CONTAINER_NAME}" "${CONTAINER_NAME}:${CONTAINER_TAG}"
+       exit
+       ;;
+    tj | test-join)
+       mkdir -p "${SCRIPT_DIR}/data"
+       echo " Share data from host to container: "
+       echo "  - Local data folder: ${SCRIPT_DIR}/data"
+       echo "  - Container data: /host/data"
+       "${CONTAINER_BIN}" run -t -i "${CONTAINER_VOL[@]}" --rm --name  "${CONTAINER_NAME}" "${CONTAINER_NAME}:${CONTAINER_TAG}" \
+       /bin/sh -c 'cd /host/test && ./testjoin.sh'
        exit
        ;;
 
